@@ -1,5 +1,6 @@
+_A simple AI movement script for a ranged 3D enemy._
 
-A simple AI movement script for a ranged 3D enemy:
+**SETUP:**
 
 1) Create an enemy GameObject, give it a RigidBody, and attach the AIRanged script.
 

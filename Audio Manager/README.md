@@ -1,5 +1,6 @@
+_A basic audio manager for playing sound effects and music._
 
-A basic audio manager for playing sound effects and music:
+**SETUP:**
 
 1) Attach the AudioManager script to an empty GameObject in the scene.
 

@@ -1,5 +1,6 @@
+_A first person character controller for a 3D game._
 
-A first person character controller for a 3D game:
+**SETUP:**
 
 1) Create a player GameObject, give it a Rigidbody, and attach the PlayerMovement script.
 
