@@ -2,9 +2,10 @@ _A system that pulls data from Google Sheets to JSON files, then reads those fil
 
 **SHEETS SETUP:**
 
-1) Create a Google Sheet and fill it in with some data (see SheetsFormat.png for how to format it). You can edit the
-code provided to work for different layouts, but as-written it's expecting the first row to be your headers, with data
-listed in the columns below. To store multiple variations under a single header, add a number above each variation.
+1) Create a Google Sheet and fill it in with some data. You can edit the code provided to work for different layouts,
+but as-written it's expecting the first row to be your headers, with data listed in the columns below. To store multiple
+variations under a single header, add a number above each variation.
+![Sheet Formatting Guide](SheetsFormat.png)
 
 2) Go to Extensions > Apps Script in the top-left menu bar, and paste the following script:
 
@@ -44,7 +45,8 @@ function doGet() {
   return ContentService
     .createTextOutput(JSON.stringify(jsonData))
     .setMimeType(ContentService.MimeType.JSON);
-}```
+}
+```
 
 3) Click `Deploy > New Deployment > Select Type > Web App`. Make the project accessible by anyone. Once it finishes, you'll see a
 Deployment ID: copy that to your clipboard.
