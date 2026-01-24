@@ -31,10 +31,10 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        /*if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             skip = true;
-        }
+        }*/
     }
 
     //Used to play multiple lines in sequence, pausing waitTime seconds between each
@@ -121,9 +121,9 @@ public class DialogueManager : MonoBehaviour
     }
 
     //Play dialogue by querying from JSON data (requires the associated JSON parser)
-    public string[] PlayByID(int sheetNum, string ID, int variation, float waitTime, bool play = true)
+    public string[] PlayByID(string sheetName, string ID, int variation, float waitTime, bool play = true)
     {
-        string[] lines = parser.FindByID(sheetNum, ID, variation);
+        string[] lines = parser.FindByID(sheetName, ID, variation);
         if (play)
             PlayMultiple(lines, waitTime);
         return lines;

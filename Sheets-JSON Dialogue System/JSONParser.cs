@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 public class JSONParser : MonoBehaviour
 {
-    private List<Dictionary<string, Dictionary<string, string>>> dataBank = new List<Dictionary<string, Dictionary<string, string>>>();
+    private Dictionary<string, Dictionary<string, Dictionary<string, string>>> dataBank = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
 
     void Start()
     {
@@ -34,7 +34,7 @@ public class JSONParser : MonoBehaviour
                     }
                 }
             }
-            dataBank.Add(dict);
+            dataBank[file.name] = dict;
         }
     }
 
@@ -52,14 +52,13 @@ public class JSONParser : MonoBehaviour
         }
     }
 
-    //TODO: change sheetNum to a string?
-    public string[] FindByID(int sheetNum, string ID, int variation)
+    public string[] FindByID(string sheetName, string ID, int variation)
     {
-        if (dataBank.Count > sheetNum && dataBank[sheetNum].ContainsKey(ID))
+        if (dataBank.ContainsKey(sheetName) && dataBank[sheetName].ContainsKey(ID))
         {
             //Iterate through the values under this ID until we find the requested variation, or else the greatest number smaller than it
             int greatestInt = -1;
-            foreach (var value in dataBank[sheetNum][ID].Values)
+            foreach (var value in dataBank[sheetName][ID].Values)
             {
                 if (int.TryParse(value, out int parsedInt))
                 {
@@ -73,7 +72,7 @@ public class JSONParser : MonoBehaviour
             //Add the lines for the chosen variation
             List<string> lines = new List<string>();
             bool correctPart = false;
-            foreach (var kvp in dataBank[sheetNum][ID])
+            foreach (var kvp in dataBank[sheetName][ID])
             {
                 if (kvp.Value == "" && correctPart)
                     break;
@@ -88,7 +87,7 @@ public class JSONParser : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"No data found for sheet number {sheetNum} and variation {variation}");
+            Debug.LogWarning($"No data found for sheet {sheetName} and variation {variation}");
             return null;
         }
     }
