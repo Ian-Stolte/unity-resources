@@ -2,7 +2,7 @@ _A procedural generation system for tiled, top-down 2D levels, using Unity's Til
 
 **SETUP:**
 
-1) Add the `TilemapGenerations` prefab to your scene, and attach the `TilemapGeneration` script to it.
+1) Add the `TilemapGeneration` prefab to your scene, and attach the `TilemapGeneration` script to it.
 
 2) Set the `Map` paramater to the first child of the prefab (named Walls). Take the `Rule Tile.asset` from this folder and assign it to the `Rule Tile` parameter.
 

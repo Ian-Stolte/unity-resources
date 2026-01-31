@@ -2,9 +2,9 @@ _A simple AI movement script for a ranged 3D enemy._
 
 **SETUP:**
 
-1) Create an enemy GameObject, give it a RigidBody, and attach the AIRanged script.
+1) Create an enemy GameObject, give it a RigidBody, and attach the `AIRanged` script.
 
-2) Add a gun (or other weapon) GameObject as a child of the enemy, and assign it to the Gun field.
+2) Add a gun (or other weapon) GameObject as a child of the enemy, and assign it to the `Gun` field.
 
 3) Assign your player GameObject to the Player field.
 
