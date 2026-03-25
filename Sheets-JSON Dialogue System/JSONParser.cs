@@ -10,7 +10,7 @@ public class JSONParser : MonoBehaviour
 {
     private Dictionary<string, Dictionary<string, Dictionary<string, string>>> dataBank = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
 
-    void Start()
+    void Awake()
     {
         LoadFromJson();
     }

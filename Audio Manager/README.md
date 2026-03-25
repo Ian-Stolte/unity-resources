@@ -4,7 +4,7 @@ _A basic audio manager for playing sound effects and music._
 
 1) Attach the  `AudioManager` script to an empty GameObject in the scene.
 
-2) Attach the `DestroyAfterDelay` script to the `SFX` prefab from this folder, and assign that prefab to the `SFX Prefab` field in the AudioManager.
+2) Find the `SFX` prefab from this folder, and assign that it to the `SFX Prefab` field in the AudioManager.
 
 3) Add entries to the SFX and Music arrays in the inspector, and drag your audio clips into the `Clip` field.
 

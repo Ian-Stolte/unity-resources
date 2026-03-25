@@ -14,12 +14,14 @@ public class AudioManager : MonoBehaviour
     [Header("Prefabs")]
     public GameObject SFXPrefab;
 
-    [Header("Editable")]
+    [Header("Audio Clips")]
     public Sound[] music;
+    public Sound[] bgAmbience;
     public Sound[] sfx;
+    private Sound[] allSounds;
 
-    [Header("Don't edit")]
-    public AudioSource[] audios;
+    [Header("Sources")]
+    private AudioSource[] audios;
 
 
     void Awake()
@@ -29,16 +31,10 @@ public class AudioManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+        allSounds = sfx.Concat(music).Concat(bgAmbience).ToArray();
+
         //create an AudioSource for each stored audio clip
-        foreach (Sound s in music)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.pitch = s.pitch;
-            s.source.loop = s.loop;
-        }
-        foreach (Sound s in sfx)
+        foreach (Sound s in allSounds)
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -49,26 +45,10 @@ public class AudioManager : MonoBehaviour
         audios = gameObject.GetComponents<AudioSource>();
     }
 
-    void Start()
-    {
-        //start and stop each sound to prevent audio errors on first play
-        foreach (Sound s in music)
-        {
-            float storedVol = s.volume;
-            s.volume = 0;
-            s.source.Play();
-            s.source.Stop();
-            s.volume = storedVol;
-        }
-    }
-
     //Plays the associated AudioSource -- good for looping sounds or sounds you need to later Stop() 
     public void Play(string name)
     {
-        Sound s = Array.Find(sfx, sound => sound.name == name);
-        if (s == null)
-            s = Array.Find(music, sound => sound.name == name);
-
+        Sound s = Array.Find(allSounds, sound => sound.name == name);
         if (s == null)
         {
             Debug.LogError("Sound " + name + " not found!");
@@ -80,7 +60,7 @@ public class AudioManager : MonoBehaviour
     //Creates a new AudioSource and randomizes pitch/volume for variety -- good for sounds that happen in quick succession
     public void SpawnSFX(string name)
     {
-        Sound s = Array.Find(sfx, sound => sound.name == name);
+        Sound s = Array.Find(allSounds, sound => sound.name == name);
         if (s == null)
         {
             Debug.LogError("Sound " + name + " not found!");
@@ -89,18 +69,16 @@ public class AudioManager : MonoBehaviour
 
         AudioSource prefab = Instantiate(SFXPrefab).GetComponent<AudioSource>();
         prefab.volume = UnityEngine.Random.Range(0.8f, 1.2f) * s.source.volume;
-        prefab.pitch = UnityEngine.Random.Range(0.85f, 1.15f);
+        prefab.pitch = UnityEngine.Random.Range(0.85f, 1.15f) * s.source.pitch;
         prefab.resource = s.source.clip;
         prefab.Play();
-        prefab.GetComponent<DestroyAfterDelay>().lifetime = s.source.clip.length;
+        Destroy(prefab, s.source.clip.length);
     }
 
     //Instantly stop a clip you started with Play()
     public void Stop(string name)
     {
-        Sound s = Array.Find(sfx, sound => sound.name == name);
-        if (s == null)
-            s = Array.Find(music, sound => sound.name == name);        
+        Sound s = Array.Find(allSounds, sound => sound.name == name);
         if (s == null)
         {
             Debug.LogError("Sound " + name + " not found!");
@@ -112,7 +90,7 @@ public class AudioManager : MonoBehaviour
     //Fade pitch/volume over a set duration
     public IEnumerator FadeEffects(string name, float duration, float volume, float pitch = 1)
     {
-        Sound s = Array.Find(music, sound => sound.name == name);
+        Sound s = Array.Find(allSounds, sound => sound.name == name);
         if (s == null)
         {
             Debug.LogError("Sound " + name + " not found!");
@@ -132,9 +110,9 @@ public class AudioManager : MonoBehaviour
     }
 
     //Instantly set pitch/volume
-    public void SetEffects(string name, float volume, float pitch)
+    public void SetEffects(string name, float volume, float pitch = 1)
     {
-        Sound s = Array.Find(music, sound => sound.name == name);
+        Sound s = Array.Find(allSounds, sound => sound.name == name);
         if (s == null)
         {
             Debug.LogError("Sound " + name + " not found!");
@@ -143,6 +121,18 @@ public class AudioManager : MonoBehaviour
 
         s.source.volume = volume;
         s.source.pitch = pitch;
+    }
+
+    // Get the current volume of a sound
+    public float GetVolume(string name)
+    {
+        Sound s = Array.Find(allSounds, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.LogError("Sound " + name + " not found!");
+            return 0;
+        }
+        return s.volume;
     }
 }
 
@@ -155,11 +145,11 @@ public class Sound
     public AudioClip clip;
 
     [Range(0f, 1f)]
-    public float volume;
-    [Range(-3f, 3f)]
-    public float pitch;
+    public float volume = 1f;
+    [Range(0, 3f)]
+    public float pitch = 1f;
 
     public bool loop;
 
-    public AudioSource source;
+    [HideInInspector] public AudioSource source;
 }

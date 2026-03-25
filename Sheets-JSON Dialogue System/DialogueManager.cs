@@ -20,7 +20,7 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue")]
     public GameObject dialogue;
     public TextMeshProUGUI txt;
-    public float typeSpeed;
+    public float typeSpeed = 0.8f;
     public JSONParser parser;
     private bool skip;
 
@@ -31,6 +31,7 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
+        // Uncomment to enable clicking through dialogue with Space/Left Click
         /*if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             skip = true;
